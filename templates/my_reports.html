@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Incident Reports | CyberSecure</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="reports-navbar">
+      <a href="{{ url_for('dashboard') }}" class="brand">
+        <span class="brand-icon">🛡️</span>
+        CyberSecure
+      </a>
+
+      <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('report_incident') }}">Report Incident</a>
+        <a href="{{ url_for('my_reports') }}" class="active">My Reports</a>
+        <form method="POST" action="{{ url_for('logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit">Logout</button>
+        </form>
+      </div>
+    </nav>
+
+    <main class="reports-container">
+      <div class="reports-heading">
+        <div>
+          <span class="section-label">INCIDENT MANAGEMENT</span>
+          <h1>My Incident Reports</h1>
+          <p>View and track the cybersecurity incidents you have reported.</p>
+        </div>
+
+        <a href="{{ url_for('report_incident') }}" class="primary-button">
+          Report New Incident
+        </a>
+      </div>
+
+      <section class="reports-card">
+        <div class="reports-card-header">
+          <div>
+            <h2>Your Report History</h2>
+            <p>Track the status and progress of your cases.</p>
+          </div>
+          <span class="report-count">{{ incidents|length }} Reports</span>
+        </div>
+
+        {% if incidents %}
+        <div class="table-wrapper">
+          <table class="reports-table">
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Incident Type</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Incident Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for report in incidents %}
+              <tr>
+                <td class="case-id">{{ report.case_id }}</td>
+                <td>{{ report.incident_type }}</td>
+                <td>
+                  <span class="priority-badge {{ report.priority|lower }}">
+                    {{ report.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="status-badge {{ report.status|lower|replace(' ', '-')|replace('_', '-') }}"
+                  >
+                    {{ report.status|replace('_', ' ') }}
+                  </span>
+                </td>
+                <td>{{ report.incident_date }}</td>
+                <td>
+                  <a
+                    href="{{ url_for('view_case', incident_id=report['id']) }}"
+                  >
+                    View Case
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-reports">
+          <div class="empty-icon">📋</div>
+          <h3>No reports yet</h3>
+          <p>You haven't submitted any cybersecurity incident reports.</p>
+          <a href="{{ url_for('report_incident') }}" class="primary-button">
+            Report Your First Incident
+          </a>
+        </div>
+        {% endif %}
+      </section>
+
+      <a href="{{ url_for('dashboard') }}" class="back-link">
+        Back to Dashboard
+      </a>
+    </main>
+  </body>
+</html>

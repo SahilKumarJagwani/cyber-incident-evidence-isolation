@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | CyberSecure</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body class="admin-page">
+    <nav class="admin-navbar">
+      <a href="{{ url_for('admin_dashboard') }}" class="admin-brand">
+        <span class="brand-icon">🛡️</span>
+        <span>CyberSecure</span>
+      </a>
+
+      <div class="admin-nav-links">
+        <a href="{{ url_for('admin_dashboard') }}" class="active">Dashboard</a>
+        <a href="{{ url_for('admin_audit_logs') }}">Audit Logs</a>
+        <form method="POST" action="{{ url_for('logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit">Logout</button>
+        </form>
+      </div>
+    </nav>
+
+    <main class="admin-container">
+      <section class="admin-heading">
+        <div>
+          <span class="section-label">ADMINISTRATION</span>
+          <h1>Admin Dashboard</h1>
+          <p>Welcome, Security Administrator</p>
+          <span class="admin-role">Role: Administrator</span>
+        </div>
+      </section>
+
+      <section class="admin-incidents-card">
+        <div class="admin-card-header">
+          <div>
+            <h2>Reported Incidents</h2>
+            <p>Review and manage reported cybersecurity incidents.</p>
+          </div>
+
+          <span class="admin-count"> {{ incidents|length }} Cases </span>
+        </div>
+
+        {% if incidents %}
+
+        <div class="table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Case ID</th>
+                <th>Incident Type</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Incident Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for incident in incidents %}
+              <tr>
+                <td class="case-id">{{ incident.case_id }}</td>
+                <td>{{ incident.incident_type }}</td>
+                <td>
+                  <span class="priority-badge {{ incident.priority|lower }}">
+                    {{ incident.priority }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="status-badge {{ incident.status|lower|replace(' ', '-')|replace('_', '-') }}"
+                  >
+                    {{ incident.status|replace('_', ' ') }}
+                  </span>
+                </td>
+                <td>{{ incident.incident_date }}</td>
+                <td>
+                  <a
+                    href="{{ url_for('admin_case', incident_id=incident.id) }}"
+                    class="view-button"
+                  >
+                    View Case
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="admin-empty-state">
+          <div class="empty-icon">📋</div>
+          <h3>No incidents reported yet</h3>
+          <p>New incident reports will appear here.</p>
+        </div>
+        {% endif %}
+      </section>
+
+      <div class="admin-footer-links">
+        <a href="{{ url_for('admin_audit_logs') }}">View Audit Logs</a>
+      </div>
+    </main>
+  </body>
+</html>

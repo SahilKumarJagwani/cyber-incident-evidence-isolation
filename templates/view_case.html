@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Details | CyberSecure</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        background: #f4f7fc;
+        font-family: Arial, sans-serif;
+        color: #17345c;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: auto;
+      }
+
+      .card,
+      .case-card {
+        background: #fff;
+        padding: 25px;
+        margin-bottom: 20px;
+        border: 1px solid #dce7f7;
+        border-radius: 12px;
+        box-sizing: border-box;
+      }
+
+      h1,
+      h2 {
+        color: #174ea6;
+      }
+
+      h1 {
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        margin-top: 0;
+        margin-bottom: 18px;
+      }
+
+      p {
+        line-height: 1.6;
+        margin: 10px 0;
+      }
+
+      .evidence-item,
+      .update-item {
+        padding: 12px 0;
+      }
+
+      .evidence-item code {
+        font-size: 12px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      hr {
+        border: 0;
+        border-top: 1px solid #dce7f7;
+        margin: 12px 0;
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-top: 4px;
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .back-link:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 20px 14px;
+        }
+
+        .card,
+        .case-card {
+          padding: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Case Details</h1>
+
+      <div class="card">
+        <h2>{{ incident['case_id'] }}</h2>
+        <p><strong>Incident Type:</strong> {{ incident['incident_type'] }}</p>
+        <p><strong>Priority:</strong> {{ incident['priority'] }}</p>
+        <p><strong>Status:</strong> {{ incident['status'] }}</p>
+        <p><strong>Incident Date:</strong> {{ incident['incident_date'] }}</p>
+        <p><strong>Description:</strong></p>
+        <p>{{ incident['description'] }}</p>
+      </div>
+
+      <section class="case-card">
+        <h2>Supporting Evidence</h2>
+
+        {% if evidence %} {% for file in evidence %}
+        <div class="evidence-item">
+          <p>
+            <strong>File Name:</strong>
+            {{ file["original_filename"] }}
+          </p>
+
+          <p>
+            <strong>File Type:</strong>
+            {{ file["file_type"] }}
+          </p>
+
+          <p>
+            <strong>File Size:</strong>
+            {{ file["file_size"] }} bytes
+          </p>
+
+          <p>
+            <strong>SHA-256:</strong>
+            <code>{{ file["file_hash"] }}</code>
+          </p>
+
+          <p>
+            <strong>Uploaded:</strong>
+            {{ file["uploaded_at"] }}
+          </p>
+        </div>
+        <hr />
+        {% endfor %} {% else %}
+        <p>No evidence uploaded for this case.</p>
+        {% endif %}
+      </section>
+
+      <section class="case-card">
+        <h2>Case Updates</h2>
+
+        {% if updates %} {% for update in updates %}
+        <div class="update-item">
+          <p>
+            <strong>Status:</strong>
+            {{ update["status"]|replace("_", " ") }}
+          </p>
+
+          <p>
+            <strong>Message:</strong>
+            {{ update["message"] }}
+          </p>
+
+          <small> {{ update["created_at"] }} </small>
+        </div>
+        <hr />
+        {% endfor %} {% else %}
+        <p>No updates from the administrator yet.</p>
+        {% endif %}
+      </section>
+
+      <a class="back-link" href="{{ url_for('my_reports') }}">
+        Back to My Reports
+      </a>
+    </div>
+  </body>
+</html>

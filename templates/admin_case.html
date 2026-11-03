@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Case Review | CyberSecure</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="case-page">
+
+    <nav class="case-navbar">
+        <a href="{{ url_for('admin_dashboard') }}" class="case-brand">
+            <span class="case-brand-icon">🛡️</span>
+            CyberSecure
+        </a>
+
+        <div class="case-nav-links">
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('admin_audit_logs') }}">Audit Logs</a>
+            <form method="POST" action="{{ url_for('logout') }}">
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <main class="case-container">
+
+        <div class="case-heading">
+            <div>
+                <span class="case-label">INCIDENT MANAGEMENT</span>
+                <h1>Case Review</h1>
+                <p>Review evidence, investigate, and manage this incident.</p>
+            </div>
+            <span class="case-id-badge">
+                {{ incident["case_id"] }}
+            </span>
+        </div>
+
+        <section class="case-card">
+            <div class="case-card-heading">
+                <div>
+                    <h2>Incident Overview</h2>
+                    <p>Reporter and incident details</p>
+                </div>
+                <span class="status-badge
+                    {{ incident['status']|lower|replace(' ', '-')|replace('_', '-') }}">
+                    {{ incident["status"]|replace("_", " ") }}
+                </span>
+            </div>
+
+            <div class="case-info-grid">
+                <div class="info-block">
+                    <span class="info-label">Reporter Name</span>
+                    <p>{{ incident["reporter_name"] }}</p>
+                </div>
+
+                <div class="info-block">
+                    <span class="info-label">Reporter Email</span>
+                    <p>{{ incident["reporter_email"] }}</p>
+                </div>
+
+                <div class="info-block">
+                    <span class="info-label">Incident Type</span>
+                    <p>{{ incident["incident_type"] }}</p>
+                </div>
+
+                <div class="info-block">
+                    <span class="info-label">Incident Date</span>
+                    <p>{{ incident["incident_date"] }}</p>
+                </div>
+
+                <div class="info-block">
+                    <span class="info-label">Location</span>
+                    <p>{{ incident["location"] }}</p>
+                </div>
+
+                <div class="info-block">
+                    <span class="info-label">Priority</span>
+                    <p>
+                        <span class="priority-badge
+                            {{ incident['priority']|lower }}">
+                            {{ incident["priority"] }}
+                        </span>
+                    </p>
+                </div>
+
+                <div class="detail-box description-box">
+                    <span class="detail-label">Incident Description</span>
+                    <p class="description-text">{{ incident["description"] }}</p>
+                </div>
+            </div>
+
+            <div class="indicator-section">
+                <h3>Incident Indicators</h3>
+
+                <div class="indicator-grid">
+                    <div class="indicator-item">
+                        <span>Clicked suspicious link</span>
+                        {% if incident["clicked_link"] %}
+                            <span class="indicator-yes">Yes</span>
+                        {% else %}
+                            <span class="indicator-no">No</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="indicator-item">
+                        <span>Credentials entered</span>
+                        {% if incident["credentials_entered"] %}
+                            <span class="indicator-yes">Yes</span>
+                        {% else %}
+                            <span class="indicator-no">No</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="case-card">
+            <div class="case-card-heading">
+                <div>
+                    <h2>Evidence</h2>
+                    <p>Uploaded files and integrity information</p>
+                </div>
+                <span class="case-count">
+                    {{ evidence|length }} Files
+                </span>
+            </div>
+
+            {% if evidence %}
+            <div class="case-table-wrapper">
+                <table class="case-table evidence-table">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            <th>Type</th>
+                            <th>Size</th>
+                            <th>SHA-256 Hash</th>
+                            <th>Uploaded</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for file in evidence %}
+                        <tr>
+                            <td>{{ file["original_filename"] }}</td>
+                            <td>{{ file["file_type"] }}</td>
+                            <td>{{ file["file_size"] }} bytes</td>
+                            <td>
+                                <code class="hash-value">
+                                    {{ file["file_hash"] }}
+                                </code>
+                            </td>
+                            <td>{{ file["uploaded_at"] }}</td>
+                            <td>
+                                    <span class="vault-note">
+                                        Held in sandbox vault (not on this system)
+                                    </span>
+                                <form method="POST" action="{{ url_for('admin_prepare_evidence_export',
+                                    evidence_id=file['id']) }}" style="margin-top: 8px;">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="case-secondary-button">
+                                        Prepare for Sandbox
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="case-empty">
+                No evidence has been uploaded for this incident.
+            </div>
+            {% endif %}
+        </section>
+
+        <section class="case-card">
+            <div class="case-card-heading">
+                <div>
+                    <h2>Admin Actions</h2>
+                    <p>Manage case status and investigation progress</p>
+                </div>
+            </div>
+
+            <form method="POST" class="case-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="update_case">
+
+                <div class="case-form-grid">
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select id="priority" name="priority">
+                            {% for value in ["LOW", "MEDIUM", "HIGH", "CRITICAL"] %}
+                            <option value="{{ value }}"
+                                {% if incident["priority"] == value %}selected{% endif %}>
+                                {{ value }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status">
+                            {% for value in [
+                                "SUBMITTED",
+                                "ACKNOWLEDGED",
+                                "INVESTIGATING",
+                                "ACTION REQUIRED",
+                                "RESOLVED",
+                                "CLOSED"
+                            ] %}
+                            <option value="{{ value }}"
+                                {% if incident["status"] == value %}selected{% endif %}>
+                                {{ value }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assigned_to">Assign Administrator</label>
+                        <select id="assigned_to" name="assigned_to">
+                            <option value="">Not Assigned</option>
+                            {% for admin in admins %}
+                            <option value="{{ admin['id'] }}"
+                                {% if incident["assigned_to"] == admin["id"] %}selected{% endif %}>
+                                {{ admin["name"] }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="case-message">Public Case Update</label>
+                    <textarea
+                        id="case-message"
+                        name="message"
+                        rows="4"
+                        placeholder="Write an update visible to the reporter..."
+                    ></textarea>
+                    <small>
+                        This message may be visible to the person who reported the incident.
+                    </small>
+                </div>
+
+                <button type="submit" class="case-primary-button">
+                    Save Case Changes
+                </button>
+            </form>
+        </section>
+
+        <section class="case-card">
+            <div class="case-card-heading">
+                <div>
+                    <h2>Internal Investigation Notes</h2>
+                    <p>Private notes visible only to authorized administrators</p>
+                </div>
+            </div>
+
+            <form method="POST" class="case-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="action" value="add_note">
+
+                <div class="form-group">
+                    <label for="note">New Investigation Note</label>
+                    <textarea
+                        id="note"
+                        name="note"
+                        rows="4"
+                        placeholder="Enter private investigation findings..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="case-secondary-button">
+                    Add Internal Note
+                </button>
+            </form>
+
+            <div class="notes-list">
+                <h3>Previous Internal Notes</h3>
+
+                {% if notes %}
+                    {% for note in notes %}
+                    <div class="note-item">
+                        <div class="note-meta">
+                            <strong>{{ note["admin_name"] }}</strong>
+                            <span>{{ note["created_at"] }}</span>
+                        </div>
+                        <p>{{ note["note"] }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="case-empty">
+                        No internal notes yet.
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="case-card">
+            <div class="case-card-heading">
+                <div>
+                    <h2>Case Update History</h2>
+                    <p>Updates recorded for this incident</p>
+                </div>
+                <span class="case-count">
+                    {{ updates|length }} Updates
+                </span>
+            </div>
+
+            {% if updates %}
+            <div class="update-list">
+                {% for update in updates %}
+                <div class="update-item">
+                    <div class="update-marker"></div>
+                    <div class="update-content">
+                        <div class="update-meta">
+                            <strong>
+                                {{ update["status"]|replace("_", " ") }}
+                            </strong>
+                            <span>{{ update["created_at"] }}</span>
+                        </div>
+                        <p>{{ update["message"] }}</p>
+                        <small>
+                            Updated by {{ update["admin_name"] }}
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="case-empty">
+                No case updates yet.
+            </div>
+            {% endif %}
+        </section>
+
+        <a href="{{ url_for('admin_dashboard') }}" class="case-back-link">
+            Back to Admin Dashboard
+        </a>
+
+    </main>
+</body>
+</html>

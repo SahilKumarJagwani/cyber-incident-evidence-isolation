@@ -1,0 +1,37 @@
+Return-Path: <noreply@quickship-track.example>
+Received: from smtp-out.parcelmail.invalid ([203.0.113.77]) by mx.university.example with ESMTP; Tue, 27 Oct 2026 14:31:40 +0000
+Authentication-Results: mx.university.example; spf=softfail smtp.mailfrom=quickship-track.example; dkim=none; dmarc=fail header.from=quickship-track.example
+From: "QuickShip Delivery" <no-reply@quickship-track.example>
+To: student@university.example
+Subject: Your parcel could not be delivered - pay Rs. 49 redelivery fee
+Date: Tue, 27 Oct 2026 14:31:35 +0000
+Message-ID: <a91c33f0-5d1b@parcelmail.invalid>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="=_alt_boundary_7f3a9c"
+
+--=_alt_boundary_7f3a9c
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Dear Customer,
+
+We attempted to deliver your parcel (Tracking No. QS-5521-7709) but the
+address was incomplete. Your package will be returned to the sender within
+24 hours unless you pay a redelivery fee of Rs. 49.
+
+Reschedule and pay here: http://qshp.example.invalid/r/Ab3xZ9
+
+QuickShip Customer Care
+
+--=_alt_boundary_7f3a9c
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html><body>
+<p>Dear Customer,</p>
+<p>We attempted to deliver your parcel (Tracking No. QS-5521-7709) but the address was incomplete. Your package will be <b>returned to the sender within 24 hours</b> unless you pay a redelivery fee of Rs. 49.</p>
+<p><a href="http://qshp.example.invalid/r/Ab3xZ9">Reschedule and pay here</a></p>
+<p>QuickShip Customer Care</p>
+</body></html>
+
+--=_alt_boundary_7f3a9c--

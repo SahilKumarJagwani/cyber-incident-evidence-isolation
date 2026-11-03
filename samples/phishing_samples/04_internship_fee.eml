@@ -1,0 +1,43 @@
+Return-Path: <careers@talentbridge-hr.example>
+Received: from mailer.talentbridge-hr.invalid ([203.0.113.101]) by mx.university.example with ESMTP; Thu, 29 Oct 2026 16:45:09 +0000
+Authentication-Results: mx.university.example; spf=fail smtp.mailfrom=talentbridge-hr.example; dkim=none; dmarc=fail header.from=talentbridge-hr.example
+From: "TalentBridge HR" <careers@talentbridge-hr.example>
+Reply-To: <offers.desk@talentbridge-hr-mail.example>
+To: student@university.example
+Subject: Congratulations! Selected for Cyber Analyst Internship - confirm within 24 hrs
+Date: Thu, 29 Oct 2026 16:45:00 +0000
+Message-ID: <7d02e5@mailer.talentbridge-hr.invalid>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="=_alt_boundary_7f3a9c"
+
+--=_alt_boundary_7f3a9c
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Dear Candidate,
+
+Congratulations! Based on your profile you have been shortlisted for a
+paid Cyber Analyst Internship (Rs. 25,000 per month). No interview needed.
+
+To confirm your seat, complete the form below and pay a refundable
+registration fee of Rs. 2,500 within 24 hours. Seats are limited and the
+offer will be given to the next candidate after the deadline.
+
+Confirm here: http://talentbridge-hr-forms.example.invalid/apply
+
+Regards,
+HR Team, TalentBridge
+
+--=_alt_boundary_7f3a9c
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html><body>
+<p>Dear Candidate,</p>
+<p>Congratulations! Based on your profile you have been shortlisted for a paid <b>Cyber Analyst Internship (Rs. 25,000 per month)</b>. No interview needed.</p>
+<p>To confirm your seat, complete the form and pay a <b>refundable registration fee of Rs. 2,500</b> within 24 hours. Seats are limited.</p>
+<p><a href="http://talentbridge-hr-forms.example.invalid/apply">Confirm your seat</a></p>
+<p>Regards,<br>HR Team, TalentBridge</p>
+</body></html>
+
+--=_alt_boundary_7f3a9c--

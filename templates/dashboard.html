@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CyberSecure | Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body class="dashboard-page">
+    <!-- Navigation bar -->
+    <nav class="dashboard-nav">
+      <a href="/dashboard" class="dashboard-brand">
+        <span class="brand-icon">🛡️</span>
+        <span>CyberSecure</span>
+      </a>
+
+      <div class="dashboard-nav-links">
+        <a href="/report-incident">Report Incident</a>
+        <a href="/my-reports">My Reports</a>
+        <form method="POST" action="{{ url_for('logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit">Logout</button>
+        </form>
+      </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="dashboard-main">
+      <!-- Welcome section -->
+      <section class="dashboard-hero">
+        <span class="hero-label">CYBERSECURITY INCIDENT MANAGEMENT</span>
+
+        <h1>Cyber Incident Dashboard</h1>
+
+        <p class="welcome-message">Welcome, {{ session["name"] }}!</p>
+
+        <span class="role-badge"> {{ session["role"] | capitalize }} </span>
+      </section>
+
+      <!-- Student / Faculty section -->
+      <section class="dashboard-content">
+        <div class="dashboard-section-heading">
+          <div>
+            <h2>Student/Faculty Area</h2>
+            <p>You can report cybersecurity incidents and track your cases.</p>
+          </div>
+        </div>
+
+        <div class="dashboard-cards">
+          <!-- Report card -->
+          <div class="dashboard-card">
+            <div class="dashboard-card-icon">
+              <span>＋</span>
+            </div>
+
+            <h3>Report an Incident</h3>
+
+            <p>
+              Report phishing, malware, account compromise, suspicious websites,
+              or other cybersecurity incidents.
+            </p>
+
+            <a href="/report-incident" class="dashboard-action">
+              Report an Incident
+            </a>
+          </div>
+
+          <!-- My Reports card -->
+          <div class="dashboard-card">
+            <div class="dashboard-card-icon reports-icon">
+              <span>▤</span>
+            </div>
+
+            <h3>My Reports</h3>
+
+            <p>
+              View your submitted incidents, check their status, and follow the
+              progress of your cases.
+            </p>
+
+            <a href="/my-reports" class="dashboard-action"> View My Reports </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

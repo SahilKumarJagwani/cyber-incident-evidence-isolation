@@ -1,0 +1,31 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets
+.env
+receiver.env
+
+# Backups
+*.backup
+*.bak
+
+# Uploads and generated files
+uploads/
+sandbox_exports/*
+!sandbox_exports/.gitkeep
+
+# OS and editor
+.vscode/
+.DS_Store
+Thumbs.db

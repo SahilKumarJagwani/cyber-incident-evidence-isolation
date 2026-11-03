@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audit Logs | CyberSecure</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="audit-navbar">
+      <a href="{{ url_for('admin_dashboard') }}" class="brand">
+        <span class="brand-icon">🛡️</span>
+        CyberSecure
+      </a>
+
+      <div class="nav-links">
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('admin_audit_logs') }}" class="active">
+          Audit Logs
+        </a>
+        <form method="POST" action="{{ url_for('logout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit">Logout</button>
+        </form>
+      </div>
+    </nav>
+
+    <main class="audit-container">
+      <div class="audit-heading">
+        <div>
+          <span class="section-label">ADMINISTRATION</span>
+          <h1>System Audit Logs</h1>
+          <p>Monitor and review recorded administrative activities.</p>
+        </div>
+      </div>
+
+      <section class="audit-card">
+        <div class="audit-card-header">
+          <div>
+            <h2>Activity History</h2>
+            <p>Review actions performed across incident cases.</p>
+          </div>
+
+          <span class="report-count"> {{ logs|length }} Logs </span>
+        </div>
+
+        {% if logs %}
+        <div class="table-wrapper">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>Log ID</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Case ID</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {% for log in logs %}
+              <tr>
+                <td class="audit-id">#{{ log.id }}</td>
+
+                <td>
+                  <div class="audit-user">
+                    <span class="user-avatar">
+                      {{ (log.user_name or 'S')[0]|upper }}
+                    </span>
+                    <span> {{ log.user_name or 'System' }} </span>
+                  </div>
+                </td>
+
+                <td>
+                  <span class="audit-action"> {{ log.action }} </span>
+                </td>
+
+                <td>
+                  {% if log.case_id %}
+                  <span class="audit-case-id"> {{ log.case_id }} </span>
+                  {% else %}
+                  <span class="audit-muted">—</span>
+                  {% endif %}
+                </td>
+
+                <td class="audit-timestamp">{{ log["timestamp"] | ist }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="audit-empty">
+          <div class="empty-icon">📋</div>
+          <h3>No activity recorded</h3>
+          <p>Administrative actions will appear here.</p>
+        </div>
+        {% endif %}
+      </section>
+
+      <a href="{{ url_for('admin_dashboard') }}" class="back-link">
+        Back to Admin Dashboard
+      </a>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+Return-Path: <hod.office.desk@free-mail-service.example>
+Received: from webmail.free-mail-service.invalid ([198.51.100.88]) by mx.university.example with ESMTPS; Wed, 28 Oct 2026 11:03:12 +0000
+Authentication-Results: mx.university.example; spf=pass smtp.mailfrom=free-mail-service.example; dkim=pass header.d=free-mail-service.example; dmarc=none
+From: "Head of Department" <hod.office.desk@free-mail-service.example>
+Reply-To: <hod.urgent.request@private-inbox.example>
+To: student@university.example
+Subject: Quick favour - are you available?
+Date: Wed, 28 Oct 2026 11:03:00 +0000
+Message-ID: <CAM3x91_tq7=wq@webmail.free-mail-service.invalid>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+Are you available right now? I am in a meeting and cannot take calls.
+I need you to help me with a small task for a departmental seminar.
+
+Please reply as soon as you see this and keep it confidential until I
+explain further.
+
+Sent from my mobile

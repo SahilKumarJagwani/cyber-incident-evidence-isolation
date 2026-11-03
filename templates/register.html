@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | CyberSecure</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body class="auth-page register-page">
+    <header class="auth-header">
+      <a href="{{ url_for('login') }}" class="brand">
+        <span class="brand-icon">🛡️</span>
+        <span>CyberSecure</span>
+      </a>
+    </header>
+
+    <main class="register-container">
+      <section class="register-card">
+        <div class="register-heading">
+          <span class="eyebrow">JOIN THE PLATFORM</span>
+          <h1>Create your account</h1>
+          <p>Register to report and track cybersecurity incidents.</p>
+        </div>
+
+        <form method="POST" class="register-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="college_id">College ID</label>
+            <input
+              type="text"
+              id="college_id"
+              name="college_id"
+              placeholder="Enter your college ID"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Create a password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="register-button">Create Account</button>
+        </form>
+
+        <p class="auth-switch">
+          Already have an account?
+          <a href="{{ url_for('login') }}">Sign in</a>
+        </p>
+
+        <p class="auth-footer">
+          Your account helps keep your campus digitally secure.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | CyberSecure</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body class="login-page">
+    <header class="login-header">
+      <a href="/" class="brand">
+        <div class="brand-icon">🛡️</div>
+        <span>CyberSecure</span>
+      </a>
+    </header>
+
+    <main class="login-main">
+      <div class="login-card">
+        <div class="login-heading">
+          <span class="eyebrow">SECURE ACCESS PORTAL</span>
+          <h1>Welcome back</h1>
+          <p>Please enter your details to access your account.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %} {% endif %} {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="login-button">Sign in</button>
+        </form>
+
+        <p class="register-link">
+          Don't have an account?
+          <a href="{{ url_for('register') }}">Create an account</a>
+        </p>
+
+        <div class="security-note">
+          Your session is protected by secure access controls.
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

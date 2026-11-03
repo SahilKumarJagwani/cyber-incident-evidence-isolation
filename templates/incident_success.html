@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Incident Submitted | CyberSecure</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 30px 20px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f4f7fc;
+        font-family: Arial, sans-serif;
+        color: #17345c;
+      }
+
+      .success-container {
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .success-card {
+        background: #ffffff;
+        border: 1px solid #dce7f7;
+        border-radius: 16px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(23, 78, 166, 0.06);
+      }
+
+      .success-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 22px;
+        border-radius: 50%;
+        background: #e8f1ff;
+        color: #174ea6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        font-weight: bold;
+      }
+
+      h1 {
+        color: #174ea6;
+        font-size: 27px;
+        margin: 0 0 14px;
+      }
+
+      .subtitle {
+        color: #64748b;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 28px;
+      }
+
+      .case-box {
+        background: #f4f7fc;
+        border: 1px solid #dce7f7;
+        border-radius: 12px;
+        padding: 22px 15px;
+        margin: 25px 0;
+      }
+
+      .case-label {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+      }
+
+      .case-id {
+        color: #174ea6;
+        font-size: 25px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        overflow-wrap: anywhere;
+      }
+
+      .save-note {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 12px;
+      }
+
+      .priority-section {
+        margin: 25px 0;
+        color: #17345c;
+        font-size: 15px;
+      }
+
+      .priority-badge {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: bold;
+        background: #e8f1ff;
+        color: #174ea6;
+      }
+
+      .dashboard-button {
+        display: inline-block;
+        width: 100%;
+        padding: 14px 20px;
+        margin-top: 12px;
+        background: #174ea6;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 15px;
+        transition: background 0.2s ease;
+      }
+
+      .dashboard-button:hover {
+        background: #123d82;
+      }
+
+      .footer-note {
+        margin-top: 22px;
+        color: #94a3b8;
+        font-size: 12px;
+      }
+
+      @media (max-width: 480px) {
+        .success-card {
+          padding: 28px 20px;
+        }
+
+        h1 {
+          font-size: 23px;
+        }
+
+        .case-id {
+          font-size: 21px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="success-container">
+      <div class="success-card">
+        <div class="success-icon">✓</div>
+
+        <h1>Incident Report Submitted Successfully</h1>
+
+        <p class="subtitle">
+          Your incident has been recorded. Our administration team can now
+          review your report.
+        </p>
+
+        <div class="case-box">
+          <div class="case-label">Your Case ID</div>
+
+          <div class="case-id">{{ case_id }}</div>
+
+          <p class="save-note">Please save this Case ID for future tracking.</p>
+        </div>
+
+        <div class="priority-section">
+          Initial Priority:
+          <span class="priority-badge"> {{ priority }} </span>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="dashboard-button">
+          Return to Dashboard
+        </a>
+
+        <p class="footer-note">CyberSecure | Cyber Incident Reporting System</p>
+      </div>
+    </div>
+  </body>
+</html>
