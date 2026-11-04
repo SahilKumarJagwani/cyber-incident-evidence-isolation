@@ -3,20 +3,6 @@
 A Flask web application for reporting and triaging cyber incidents, built around one idea:
 **suspicious files submitted as evidence must never be stored on the machine that runs the web app.**
 
-Uploaded evidence (phishing emails, screenshots, PDFs, text files) is held only in memory, then sent over a
-**virtual serial port** into an **offline Ubuntu VM with no network adapter**. It waits in a quarantine vault
-there until an administrator releases it for analysis.
-
-> **Status: prototype / learning project.** See [Limitations](#limitations) before using it for anything real.
-
-<!--
-Add screenshots after you upload them to docs/screenshots/, then delete the comment markers around these lines:
-
-![Report form](docs/screenshots/report-form.png)
-![Admin case page](docs/screenshots/admin-case.png)
-![Evidence in the VM](docs/screenshots/vm-analysis.png)
--->
-
 ## Why this exists
 
 When someone reports a phishing email, the file usually lands on a server or an analyst's computer.
@@ -46,24 +32,10 @@ This project removes that risk by never putting the evidence on the host in the 
 
 ## Architecture
 
-```
-  User browser
-       |  HTTP upload
-       v
-  Flask app (Windows)          file is kept in memory only; type check + SHA-256
-       |  framed, HMAC-signed messages
-       v
-  Windows named pipe  <->  VirtualBox COM1 (virtual serial port)
-                                  |
-                                  v
-                    Ubuntu VM  (no network adapter)
-                    receiver service (unprivileged, no network namespace)
-                                  |
-                  /srv/evidence/incoming  --(admin releases)-->  /srv/evidence/analysis
-                      quarantine vault                             read-only copy
-```
+ ![Architecture diagram](architecture.png)
 
-### Security design
+
+## Security design
 
 | Measure | Purpose |
 |---|---|
@@ -145,34 +117,6 @@ The file appears in `/srv/evidence/analysis` inside the VM, read-only.
 - `fake_malware_samples/`: a decoy PDF, a fake scareware screenshot, a base64 command that only prints a message, and a fake ransom note
 
 Nothing in them can execute or reach a real server.
-
-## Project structure
-
-```
-app.py                 Flask application
-sandbox_link.py        host side of the serial link (framing, HMAC, timeouts)
-sandbox_receiver.py    VM side: receives, vaults and releases evidence
-make_setup_zip.py      builds the VM installer package and shared secret
-create_evidence_iso.py wraps a ZIP in an ISO for the offline VM
-init_db.py / database.py / create_admin.py
-templates/  static/    web interface
-samples/               fictional demo evidence
-```
-
-## Limitations
-
-- **Prototype**: Flask development server, HTTP, SQLite, no two-factor authentication.
-- **Not a guarantee**: virtual machine escapes exist, and Windows may page memory to disk,
-  so "never stored on the host" means never written to the application's storage.
-- **Slow link**: about 24 KB/s was measured over the emulated serial port, hence the 2 MB limit.
-- **Windows host only**: the pipe code targets Windows named pipes.
-- **No analysis automation yet** and no automated test suite.
-- The VM must be running for reports with evidence to be accepted.
-
-## Roadmap
-
-Two-factor authentication, automated tests, automated static analysis inside the VM,
-compression for text-based evidence, and Linux/macOS host support.
 
 ## License
 
